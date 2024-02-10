@@ -41,6 +41,7 @@ pipeline {
                    dir('EKS_Cluster'){
                     sh 'terraform plan'
                    }
+                   input(message: "Are you sure to Proceed" , ok: "Proceed")
                 }
             }
         }
@@ -50,8 +51,9 @@ pipeline {
             }
             steps{
                 script{
-                   dir('EKS_Cluster'){
-                    sh 'terraform apply --auto-approve'
+                    def choice = input message: "Apply or Destroy Infrastructure", ok: "Done", parameters: [choice(name: 'ONE', choices: ['apply', 'destroy'], description: '')]
+                    dir('EKS_Cluster'){
+                        sh "terraform $choice --auto-approve"
                    }
                 }
             }
