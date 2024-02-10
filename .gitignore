@@ -1,0 +1,12 @@
+*.terraform/
+node_modules
+.DS_Store
+.tmp
+npm-debug.log
+*.pem
+*.tfplan
+*.tfvars
+*.tfstate
+*.tfstate.*
+*.lock.info
+tf_sa_key
