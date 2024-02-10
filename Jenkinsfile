@@ -5,12 +5,15 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws_access_secret_key')
     }
     stages {
-        stage('Init'){
+        stage('Initializing Terraform '){
             steps{
                 script{
-                   echo "Hello from init stage "
+                   dir('EKS_CLuster'){
+                    sh 'terraform init'
+                   }
                 }
             }
         }
+
     }
 }
