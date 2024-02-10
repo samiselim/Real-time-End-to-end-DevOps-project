@@ -44,6 +44,18 @@ pipeline {
                 }
             }
         }
+         stage('Provisioning the Infrastructure |  creating EKS cluster'){
+            environment{
+                TF_VAR_vpc_cidr = "192.168.0.0/16"
+            }
+            steps{
+                script{
+                   dir('EKS_Cluster'){
+                    sh 'terraform apply --auto-approve'
+                   }
+                }
+            }
+        }
 
     }
 }
