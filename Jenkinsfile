@@ -14,6 +14,33 @@ pipeline {
                 }
             }
         }
+        stage('Formatting Terraform Code'){
+            steps{
+                script{
+                   dir('EKS_Cluster'){
+                    sh 'terraform fmt'
+                   }
+                }
+            }
+        }
+        stage('validating Terraform '){
+            steps{
+                script{
+                   dir('EKS_Cluster'){
+                    sh 'terraform validate'
+                   }
+                }
+            }
+        }
+        stage('Planning and reviewing Infrastructure '){
+            steps{
+                script{
+                   dir('EKS_Cluster'){
+                    sh 'terraform plan'
+                   }
+                }
+            }
+        }
 
     }
 }
