@@ -10,3 +10,4 @@ npm-debug.log
 *.tfstate.*
 *.lock.info
 tf_sa_key
+.terraform.lock.hcl
