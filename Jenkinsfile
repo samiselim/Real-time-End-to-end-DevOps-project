@@ -92,6 +92,14 @@ pipeline {
                 }
             }
         }
-
+        stage('Deploying the application '){
+            steps{
+                script{
+                    dir('EKS_Cluster/K8s_ConfigurationFiles'){
+                       sh 'aws eks update-kubeconfig --name my-eks-cluster' 
+                    }
+                }
+            }
+        }
     }
 }
