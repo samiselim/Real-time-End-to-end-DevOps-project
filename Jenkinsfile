@@ -96,12 +96,9 @@ pipeline {
         stage('Logging in AWS Account using Kubectl '){
             steps{
                 script{
-                    def user = credentials('aws_access_key_id')
-                    def pass = credentials('aws_access_secret_key')
-
                     sh 'aws eks update-kubeconfig --name my-eks-cluster' 
-                    sh "aws configure set aws_access_key_id $user"
-                    sh "aws configure set aws_secret_access_key $pass"
+                    sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}"
+                    sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}"
                     sh "aws configure set default.region eu-west-3 "
                     sh "aws configure set default.output json"
 
