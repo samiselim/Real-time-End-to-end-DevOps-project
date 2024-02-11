@@ -18,7 +18,14 @@ pipeline {
         stage('Building Dokcker Images '){
             steps{
                 script{
-                    //dockerLogin('dockerHub_cred')
+                    dockerLogin('dockerHub_cred')
+                    def userInput = input(
+                        id: 'userInput',
+                        message: 'Enter a Image version as float number:',
+                        parameters: [
+                            string(name: 'FLOAT_INPUT', defaultValue: 1.0, description: 'Enter a float number')
+                        ]
+                    )
                     dir('online-exam-portal'){
                             sh 'docker-compose -f ./docker-compose.yaml build'
                             sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:1.0"
