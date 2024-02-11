@@ -16,9 +16,6 @@ pipeline {
     }
     stages {
         stage('Building Dokcker Images '){
-            environment{
-
-            }
             steps{
                 script{
                     def userInput
