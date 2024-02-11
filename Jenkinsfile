@@ -119,11 +119,6 @@ pipeline {
                         sh 'kubectl apply -f frontend-deployment.yaml'
                         sh 'kubectl apply -f user-frontend-deployment.yaml'
                         sh 'kubectl apply -f mongodb-pvc.yaml'
-
-                        aws configure set aws_access_key_id YOUR_ACCESS_KEY_ID &&
-                        aws configure set aws_secret_access_key YOUR_SECRET_ACCESS_KEY &&
-                        aws configure set default.region YOUR_REGION &&
-                        aws configure set default.output json
                     }
                 }
             }
