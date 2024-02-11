@@ -18,7 +18,7 @@ pipeline {
         stage('Building Dokcker Images '){
             steps{
                 script{
-                    dockerLogin('dockerHub_cred')
+                    //dockerLogin('dockerHub_cred')
                     dir('online-exam-portal'){
                             sh 'docker-compose -f ./docker-compose.yaml build'
                             sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:1.0"
