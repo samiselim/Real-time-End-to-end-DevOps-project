@@ -20,7 +20,7 @@ pipeline {
                 script{
                     //dockerLogin('dockerHub_cred')
                     dir('online-exam-portal'){
-                            sh 'docker-compose -f ./docker-compose.yaml build'
+                            sh 'sudo docker-compose -f ./docker-compose.yaml build'
                             sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:1.0"
                             sh "docker tag frontend-app:1.0 samiselim/online-exam-portal-frontend-app:1.0"
                             sh "docker tag user-frontend-app:1.0 samiselim/online-exam-portal-user-frontend-app:1.0"
