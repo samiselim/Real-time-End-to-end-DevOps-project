@@ -93,11 +93,37 @@ pipeline {
                 }
             }
         }
+        stage('Logging in AWS Account using Kubectl '){
+            steps{
+                script{
+                    def user = credentials('aws_access_key_id')
+                    def pass = credentials('aws_access_secret_key')
+
+                    sh 'aws eks update-kubeconfig --name my-eks-cluster' 
+                    sh "aws configure set aws_access_key_id $user"
+                    sh "aws configure set aws_secret_access_key $pass"
+                    sh "aws configure set default.region eu-west-3 "
+                    sh "aws configure set default.output json"
+
+                }
+            }
+        }
         stage('Deploying the application '){
             steps{
                 script{
                     dir('EKS_Cluster/K8s_ConfigurationFiles'){
-                       sh 'aws eks update-kubeconfig --name my-eks-cluster' 
+                        sh 'aws eks update-kubeconfig --name my-eks-cluster' 
+                        sh 'kubectl apply -f mongodb-deployment.yaml'
+                        sh 'kubectl apply -f mongo-express-deployment.yaml'
+                        sh 'kubectl apply -f backend-deployment.yaml'
+                        sh 'kubectl apply -f frontend-deployment.yaml'
+                        sh 'kubectl apply -f user-frontend-deployment.yaml'
+                        sh 'kubectl apply -f mongodb-pvc.yaml'
+
+                        aws configure set aws_access_key_id YOUR_ACCESS_KEY_ID &&
+                        aws configure set aws_secret_access_key YOUR_SECRET_ACCESS_KEY &&
+                        aws configure set default.region YOUR_REGION &&
+                        aws configure set default.output json
                     }
                 }
             }
