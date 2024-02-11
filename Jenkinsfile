@@ -19,16 +19,10 @@ pipeline {
             steps{
                 script{
                     dockerLogin('dockerHub_cred')
-                    def userInput = input(
-                        id: 'userInput',
-                        message: 'Enter a Image version as float number:',
-                        parameters: [
-                            string(name: 'FLOAT_INPUT', defaultValue: 1.0, description: 'Enter a float number')
-                        ]
-                    )
+                    def floatInput = userInput['FLOAT_INPUT'].toFloat()
                     dir('online-exam-portal'){
                             sh 'docker-compose -f ./docker-compose.yaml build'
-                            sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:$userInput"
+                            sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:$floatInput"
                             sh "docker tag frontend-app:1.0 samiselim/online-exam-portal-frontend-app:1.0"
                             sh "docker tag user-frontend-app:1.0 samiselim/online-exam-portal-user-frontend-app:1.0"
                             sh "docker push samiselim/online-exam-portal-backend-app:1.0"
