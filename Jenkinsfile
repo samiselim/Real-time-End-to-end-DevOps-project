@@ -1,3 +1,13 @@
+#!/usr/bin/env groovy
+// @Library('jenkins-shared-lib')
+
+// without adding this lib globally in jenkins 
+library identifier: 'jenkins-shared-lib@main',retriever: modernSCM(
+    [$class: 'GitSCMSource',
+      remote: 'https://github.com/samiselim/jenkins-shared-lib.git',
+      credentialsId: 'Github_Credentials'
+    ]
+)
 pipeline {
     agent any
     environment{
@@ -5,6 +15,46 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws_access_secret_key')
     }
     stages {
+        stage('Building Dokcker Images '){
+            environment{
+
+            }
+            steps{
+                script{
+                    def userInput
+                    def isValid = false
+
+                    while (!isValid) {
+                        userInput = input(
+                            id: 'Image Version',
+                            message: 'Enter an floating number :',
+                            parameters: [
+                                number(name: 'inputNumber', defaultValue: 1.0, description: 'Enter a float:')
+                            ]
+                        )
+
+                        // Validate if the entered value is an integer
+                        isValid = userInput.inputFloat =~ /^[-+]?[0-9]*\.?[0-9]+$/
+                        if (!isValid) {
+                            echo "Invalid input. Please enter a valid float number."
+                        }
+                    }
+
+                    echo "User entered a valid float number: ${userInput.inputNumber}"
+                    dockerLogin('dockerHub_cred')
+                    dir('online-exam-portal'){
+                            sh 'docker-compose -f docker-compose.yaml build'
+                            sh "docker tag backend-app:1.0 samiselim/online-exam-portal-backend-app:$userInput"
+                            sh "docker tag frontend-app:1.0 samiselim/online-exam-portal-frontend-app:$userInput"
+                            sh "docker tag user-frontend-app:1.0 samiselim/online-exam-portal-user-frontend-app:$userInput"
+                            sh "docker push samiselim/online-exam-portal-backend-app:$userInput"
+                            sh "docker push samiselim/online-exam-portal-frontend-app:$userInput"
+                            sh "docker push samiselim/online-exam-portal-user-frontend-app:$userInput"
+                        }
+                    input(message: "Are you sure to Proceed" , ok: "Proceed")
+                }
+            }
+        }
         stage('Initializing Terraform '){
             steps{
                 script{
