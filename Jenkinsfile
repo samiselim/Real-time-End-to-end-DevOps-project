@@ -109,8 +109,7 @@ pipeline {
             steps{
                 script{
                     dir('EKS_Cluster/K8s_ConfigurationFiles'){
-                        sh 'aws eks update-kubeconfig --name my-eks-cluster' 
-                        sh 'kubectl apply -f mongodb-deployment.yaml'
+                        sh 'sudo kubectl apply -f mongodb-deployment.yaml'
                         sh 'kubectl apply -f mongo-express-deployment.yaml'
                         sh 'kubectl apply -f backend-deployment.yaml'
                         sh 'kubectl apply -f frontend-deployment.yaml'
