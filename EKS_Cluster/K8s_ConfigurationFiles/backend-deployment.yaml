@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-app
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+        - name: backend-app
+          image: backend-app:1.0
+          ports:
+            - containerPort: 5000
+          env:
+            - name: NODE_ENV
+              value: docker
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
