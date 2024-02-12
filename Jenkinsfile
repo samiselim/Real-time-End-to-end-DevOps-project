@@ -5,7 +5,7 @@
 library identifier: 'jenkins-shared-lib@main',retriever: modernSCM(
     [$class: 'GitSCMSource',
       remote: 'https://github.com/samiselim/jenkins-shared-lib.git',
-      credentialsId: 'Github_Credentials'
+      credentialsId: 'sami_githubAcess'
     ]
 )
 pipeline {
@@ -19,7 +19,7 @@ pipeline {
         stage('Building Dokcker Images '){
             steps{
                 script{
-                    dockerLogin('dockerHub_cred')
+                    dockerLogin('sami_docker_hub_credentials')
                      def userInput = input(
                         id: 'userInput',
                         message: 'Enter a string:',
