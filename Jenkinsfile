@@ -49,24 +49,6 @@ pipeline {
                 }
             }
         }
-        stage('Formatting Terraform Code'){
-            steps{
-                script{
-                   dir('EKS_Cluster'){
-                    sh 'terraform fmt'
-                   }
-                }
-            }
-        }
-        stage('validating Terraform '){
-            steps{
-                script{
-                   dir('EKS_Cluster'){
-                    sh 'terraform validate'
-                   }
-                }
-            }
-        }
         stage('Planning and reviewing Infrastructure '){
             environment{
                 TF_VAR_vpc_cidr = "192.168.0.0/16"
@@ -93,7 +75,7 @@ pipeline {
                 }
             }
         }
-        stage('Logging in AWS Account using Kubectl '){
+        stage('Configuring AWS Acount in Jenkins server '){
             steps{
                 script{
                     sh 'aws eks update-kubeconfig --name my-eks-cluster' 
@@ -109,7 +91,7 @@ pipeline {
             steps{
                 script{
                     dir('EKS_Cluster/K8s_ConfigurationFiles'){
-                        sh 'kubectl apply -f mongodb-deployment.yaml --validate=false'
+                        sh 'kubectl apply -f mongodb-deployment.yaml '
                         sh 'kubectl apply -f mongo-express-deployment.yaml'
                         sh 'kubectl apply -f backend-deployment.yaml'
                         sh 'kubectl apply -f frontend-deployment.yaml'
