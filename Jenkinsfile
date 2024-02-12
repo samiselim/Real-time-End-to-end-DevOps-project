@@ -109,7 +109,7 @@ pipeline {
             steps{
                 script{
                     dir('EKS_Cluster/K8s_ConfigurationFiles'){
-                        sh 'kubectl apply -f mongodb-deployment.yaml'
+                        sh 'kubectl apply -f mongodb-deployment.yaml --validate=false'
                         sh 'kubectl apply -f mongo-express-deployment.yaml'
                         sh 'kubectl apply -f backend-deployment.yaml'
                         sh 'kubectl apply -f frontend-deployment.yaml'
